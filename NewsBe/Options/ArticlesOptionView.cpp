@@ -14,6 +14,7 @@ ArticlesOptionView::ArticlesOptionView(BRect frame, char *sPrefs) :
 	BMessage *bmDummy = new BMessage((uint32)0);
 	pPref = (char *)malloc(100);
 
+	bmDummy = new BMessage((uint32)0);
 	GetPref(sPrefs, "EXPIRESAFTER", pPref);
 	btcExpires = new BTextControl(brControl, "AOVExpire", "Days To Keep During Expires: ", pPref, bmDummy, B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW | B_NAVIGABLE);
 	btcExpires->SetDivider(be_plain_font->StringWidth("Days To Keep During Expires: "))  ;
@@ -30,6 +31,7 @@ ArticlesOptionView::ArticlesOptionView(BRect frame, char *sPrefs) :
 	{
 		iCheckState = B_CONTROL_OFF;
 	}
+	bmDummy = new BMessage((uint32)0);
 	bcbAutoExpire = new BCheckBox(brControl, "AOVAuto", "Auto Expire ? ", bmDummy);
 	AddChild(bcbAutoExpire);
 	bcbAutoExpire->SetValue(iCheckState);
@@ -39,6 +41,7 @@ ArticlesOptionView::ArticlesOptionView(BRect frame, char *sPrefs) :
 	brControl.top += 40;
 	brControl.bottom = brControl.top + 20;
 	GetPref(sPrefs, "ARTICLEWINFONTSIZE", pPref);
+	bmDummy = new BMessage((uint32)0);
 	btcWindowSize = new BTextControl(brControl, "AOVWinSize", "Article Window Font Size: ", pPref, bmDummy, B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW | B_NAVIGABLE);
 	btcWindowSize->SetDivider(be_plain_font->StringWidth("Days To Keep During Expires: "))  ;
 	AddChild(btcWindowSize);
@@ -55,6 +58,7 @@ ArticlesOptionView::ArticlesOptionView(BRect frame, char *sPrefs) :
 	{
 		iCheckState = B_CONTROL_OFF;
 	}
+	bmDummy = new BMessage((uint32)0);
 	bcbWindow = new BCheckBox(brControl, "AOVWindow", "Article Window open at Startup ? ", bmDummy, B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW | B_NAVIGABLE);
 	AddChild(bcbWindow);
 	bcbWindow->SetValue(iCheckState);
@@ -74,7 +78,7 @@ int32 ArticlesOptionView::GetAutoExpire()
 
 int32 ArticlesOptionView::GetWindow()
 {
-	return(bcbAutoExpire->Value());
+	return(bcbWindow->Value());
 }	
 
 const char *ArticlesOptionView::GetWinSize()

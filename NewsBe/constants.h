@@ -56,4 +56,5 @@ const uint32 OPTION_SAVE        = 'OWos';
 const uint32 SCRIPT_ASKS         = 'REas';
 
 
+
 #endif

@@ -23,7 +23,7 @@ public:
 private:
 // insert private methods and data here
 	NewsBeMainWindow *win;
-
+	char *GetAppPath(char *);
 };
 // END (class declaration)
 

@@ -271,6 +271,12 @@ bool myConnection::GetArticle(char *pArticle, int32 iMsgIDLength, char *sNewsGro
 		if (!bIsMsgID)
   		{
   			pStartPointer = strstr(pStartPointer,"Message-ID:");
+			if(pStartPointer == NULL)
+			{
+				// some dodgy new clients put dodgy headers out
+			   	pStartPointer = (char *)objArticle->getData();
+	  			pStartPointer = strstr(pStartPointer,"Message-Id:");				
+			}
   			pStartPointer = strchr(pStartPointer, '<');
   			pEndPointer = strchr(pStartPointer, '>');
 			sArticle = (char *)malloc((pEndPointer - pStartPointer)+10);

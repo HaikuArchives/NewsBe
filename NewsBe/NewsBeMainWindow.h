@@ -7,13 +7,14 @@
 #include <Be.h>
 #include <stdlib.h>
 
-#include "NewsBeMenuBar.h"
+#include "Components/NewsBeMenuBar.h"
 #include "NewsBeView.h"
 #include "ArticleWindow.h"
 #include "constants.h"
 #include "Utilities.h"
 #include "Options/OptionsWindow.h"
 #include "ScriptServer/ScriptServer.h"
+#include "ServerWindow/ServerWindow.h"
 #ifndef NNTP_H
 #include "NNTP.h"
 #endif

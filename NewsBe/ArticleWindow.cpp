@@ -6,9 +6,6 @@ ArticleWindow::ArticleWindow(BRect frame, const char *title,
 	BWindow(frame, title, type, flags, workspaces)
 {
 	BRect rect = Bounds();
-	BMenu *tempMenu;
-	BMenuItem *tempMenuItem;
-	BMessage *pMsg;
 	
 	itsPrefs = sPrefs;
 	itsMainWindow = blMainWindow;
@@ -17,51 +14,6 @@ ArticleWindow::ArticleWindow(BRect frame, const char *title,
 
 	keyMenuBar = new NewsBeMenuBar(rect, "NewsBe Menu", B_FOLLOW_LEFT_RIGHT|B_FOLLOW_TOP, B_ITEMS_IN_ROW, true);
 	//first menu....
-	tempMenu = new BMenu("News Transfer");
-
-	pMsg = new BMessage(GET_NEWS);
-	tempMenuItem = new BMenuItem("Retrieve News",pMsg,'G'); 	
-	tempMenu->AddItem(tempMenuItem);
-
-	pMsg = new BMessage(SEND_NEWS);
-	tempMenuItem = new BMenuItem("Send News",pMsg,'S'); 	
-	tempMenu->AddItem(tempMenuItem);
-	
-	pMsg = new BMessage(BOTH_NEWS);
-	tempMenuItem = new BMenuItem("Send and Retrieve",pMsg,'B'); 	
-	tempMenu->AddItem(tempMenuItem);	
-
-	keyMenuBar->AddItem(tempMenu);
-	
-	//second menu....
-	tempMenu = new BMenu("Group Maintanence");
-	
-//	pMsg = new BMessage(EDIT_SERVERS);
-//	tempMenuItem = new BMenuItem("Edit Servers",pMsg,'N'); 	
-//	tempMenu->AddItem(tempMenuItem);	
-	
-	pMsg = new BMessage(EXPIRE_NEWS);
-	tempMenuItem = new BMenuItem("EXPIRE News",pMsg,'E'); 	
-	tempMenu->AddItem(tempMenuItem);
-
-	keyMenuBar->AddItem(tempMenu);
-	
-	//third menu.....
-	tempMenu = new BMenu("Articles");
-	
-	pMsg = new BMessage(FORWARD_ARTICLE);
-	tempMenuItem = new BMenuItem("Forward Articles",pMsg,'F'); 	
-	tempMenu->AddItem(tempMenuItem);
-
-	pMsg = new BMessage(DECODE_ARTICLE);
-	tempMenuItem = new BMenuItem("UUdecode Article",pMsg,'U'); 	
-	tempMenu->AddItem(tempMenuItem);	
-	
-	pMsg = new BMessage(DECODE_MIME);
-	tempMenuItem = new BMenuItem("Decode base64",pMsg,'M'); 	
-	tempMenu->AddItem(tempMenuItem);	
-	keyMenuBar->AddItem(tempMenu);
-
 	AddChild(keyMenuBar);
 
 	rect = Bounds();

@@ -17,6 +17,7 @@ UserOptionView::UserOptionView(BRect frame, char *sPrefs) :
 	AddChild(btcEmail);
 
 	brControl.top += 40;
+	bmDummy = new BMessage((uint32)0);
 	GetPref(sPrefs, "REALNAME", pPref);
 	btcRealName = new BTextControl(brControl, "UOVRealName", "Real Name: ", pPref, bmDummy, B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW | B_NAVIGABLE);
 	btcRealName->SetDivider(be_plain_font->StringWidth("E-mail Address: "))  ;

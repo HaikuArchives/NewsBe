@@ -25,9 +25,6 @@ NewsBeMainWindow::NewsBeMainWindow(BRect frame, const char *title,
 	char *pStart;
 	
 	BRect rect = Bounds();
-	BMenu *tempMenu;
-	BMenuItem *tempMenuItem;
-	BMessage *pMsg;
 	BVolume *bvAppVolume;	
 	
 	app_info info;
@@ -65,90 +62,11 @@ NewsBeMainWindow::NewsBeMainWindow(BRect frame, const char *title,
 	rect.bottom = 19;
 
 	keyMenuBar = new NewsBeMenuBar(rect, "NewsBe Menu", B_FOLLOW_LEFT_RIGHT|B_FOLLOW_TOP, B_ITEMS_IN_ROW, true);
-	//first menu....
-	tempMenu = new BMenu("News Transfer");
-
-	pMsg = new BMessage(GET_NEWS);
-	tempMenuItem = new BMenuItem("Retrieve News",pMsg,'G'); 	
-	tempMenu->AddItem(tempMenuItem);
-
-	pMsg = new BMessage(SEND_NEWS);
-	tempMenuItem = new BMenuItem("Send News",pMsg,'S'); 	
-	tempMenu->AddItem(tempMenuItem);
-	
-	pMsg = new BMessage(BOTH_NEWS);
-	tempMenuItem = new BMenuItem("Send and Retrieve",pMsg,'B'); 	
-	tempMenu->AddItem(tempMenuItem);	
-
-	keyMenuBar->AddItem(tempMenu);
-	
-	//second menu....
-	tempMenu = new BMenu("Group Maintanence");
-	
-//	pMsg = new BMessage(EDIT_SERVERS);
-//	tempMenuItem = new BMenuItem("Edit Servers",pMsg,'N'); 	
-//	tempMenu->AddItem(tempMenuItem);	
-	
-	pMsg = new BMessage(EXPIRE_NEWS);
-	tempMenuItem = new BMenuItem("EXPIRE News",pMsg,'E'); 	
-	tempMenu->AddItem(tempMenuItem);
-
-	pMsg = new BMessage(FIX_GROUPS);
-	tempMenuItem = new BMenuItem("Fix Group List",pMsg,'L'); 	
-	tempMenu->AddItem(tempMenuItem);
-	
-	
-	pMsg = new BMessage(TEXT_OPTION_WINDOW);
-	tempMenuItem = new BMenuItem("Text Options",pMsg,'O'); 	
-	tempMenu->AddItem(tempMenuItem);
-
-	pMsg = new BMessage(ARTICLE_OPTION_WINDOW);
-	tempMenuItem = new BMenuItem("Article Options",pMsg,'P'); 	
-	tempMenu->AddItem(tempMenuItem);
-
-	pMsg = new BMessage(USER_OPTION_WINDOW);
-	tempMenuItem = new BMenuItem("User Options",pMsg,'Q'); 	
-	tempMenu->AddItem(tempMenuItem);
-	
-	keyMenuBar->AddItem(tempMenu);
-	
-	//third menu.....
-	tempMenu = new BMenu("Articles");
-	
-	pMsg = new BMessage(OPEN_ARTWIN);
-	tempMenuItem = new BMenuItem("Article Window",pMsg,'D'); 	
-	tempMenu->AddItem(tempMenuItem);
-
-	
-	pMsg = new BMessage(FORWARD_ARTICLE);
-	tempMenuItem = new BMenuItem("Forward Articles",pMsg,'F'); 	
-	tempMenu->AddItem(tempMenuItem);
-	
-	pMsg = new BMessage(DECODE_ARTICLE);
-	tempMenuItem = new BMenuItem("UUdecode Article",pMsg,'U'); 	
-	tempMenu->AddItem(tempMenuItem);	
-	
-	pMsg = new BMessage(DECODE_MIME);
-	tempMenuItem = new BMenuItem("Decode base64",pMsg,'M'); 	
-	tempMenu->AddItem(tempMenuItem);	
-
-	keyMenuBar->AddItem(tempMenu);
-
-	//forth menu.....
-//	tempMenu = new BMenu("Scripting");
-	
-//	pMsg = new BMessage(SCRIPT_SERVER);
-//	tempMenuItem = new BMenuItem("Run Script",pMsg,'R'); 	
-//	tempMenu->AddItem(tempMenuItem);
-
-//	keyMenuBar->AddItem(tempMenu);
-
-	AddChild(keyMenuBar);
+		AddChild(keyMenuBar);
 
 	rect = Bounds();
 
 	rect.top = 19;
-
 
 
 // creating and adding main view within the main window
@@ -157,9 +75,9 @@ NewsBeMainWindow::NewsBeMainWindow(BRect frame, const char *title,
 // specifying background color for nbvView
 	rgb_color color = {200, 200, 200, 0};
 	nbvView->SetViewColor(color);	
-
 // attach the view to the window
 	AddChild(nbvView);
+
 	
 // set a few public properties article tree	
 	myArticleTree = nbvView->ArticleTree();
@@ -197,7 +115,7 @@ void NewsBeMainWindow::MessageReceived(BMessage *message)
 	ServerWindow	*myServers;
 
 	int 			rc;
-	char 			*sSavePath = NULL, *sAppPath;
+	char 			*sSavePath = NULL;
 	const char 		*sSaveDirectory;
 	const char 		*pSaveName;
 
@@ -364,7 +282,13 @@ void NewsBeMainWindow::MessageReceived(BMessage *message)
 			myOptions->Show();
 			break;
 		case SCRIPT_SERVER:
-		    itsFilePanel = new BFilePanel(B_OPEN_PANEL);
+			if(objNewsConnection == NULL)
+			{
+				objNewsConnection = new myConnection(pPrefs);
+			}
+		 	objNewsConnection->SetNewsServer("news.demon.co.uk", 119);
+		 	objNewsConnection->GetList();
+/*		    itsFilePanel = new BFilePanel(B_OPEN_PANEL);
         	itsFilePanel->SetTarget(this);	
 			sAppPath = (char *)malloc(B_PATH_NAME_LENGTH);
 			sAppPath = GetAppPath(sAppPath);
@@ -373,7 +297,7 @@ void NewsBeMainWindow::MessageReceived(BMessage *message)
         	get_ref_for_path(tmpPath->Path(), &erSaveRef);
         	itsFilePanel->SetPanelDirectory(&erSaveRef);
 			itsFilePanel->Show();
-			break;
+*/			break; 
 		case B_REFS_RECEIVED:
 			if(myServerActive != true)
 			{
@@ -407,6 +331,22 @@ void NewsBeMainWindow::MessageReceived(BMessage *message)
 
 bool NewsBeMainWindow::QuitRequested()
 {
+	
+	BRect brWinFrame;
+	BFile *bfWinPref;
+	BString bsPrefPath;
+	char *sPrefPath = NULL;
+	
+	bsPrefPath = GetAppPath(sPrefPath);
+	bsPrefPath << "/NewsBeWinFrame";
+	bfWinPref = new BFile(bsPrefPath.String(), B_WRITE_ONLY | B_CREATE_FILE);
+	if(bfWinPref->InitCheck() == B_OK)
+	{
+		brWinFrame = Frame();
+		bfWinPref->Write(&brWinFrame, sizeof(BRect));
+		bfWinPref->Unset();
+	}	
+		
 	be_app->PostMessage(B_QUIT_REQUESTED);
 	return true;
 }

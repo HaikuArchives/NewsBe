@@ -20,7 +20,7 @@ public:
 // destructor
 				~NewsBeView();
 
-	void		        AttachedToWindow();
+//	void		        AttachedToWindow();
 	NewsBeOutlineListView *ArticleTree();
 	void		   		MessageReceived(BMessage *);
 	void 				NextArticle(bool );

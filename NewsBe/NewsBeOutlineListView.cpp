@@ -736,10 +736,19 @@ void NewsBeOutlineListView::DragFileMessage(BPoint bpPoint)
 		bnFile = new BNode(&(appInfo.ref)); 
 		bniFile = new BNodeInfo(bnFile);
 		
+
 	    if (bniFile->InitCheck() == B_NO_ERROR)
 	    {
-        	bbSmallIcon = new BBitmap(BRect(0, 0, B_MINI_ICON - 1, B_MINI_ICON - 1), bsMain->ColorSpace());
-        	bniFile->GetTrackerIcon(bbSmallIcon, B_MINI_ICON);
+       		bbSmallIcon = new BBitmap(BRect(0, 0, (B_MINI_ICON *2) - 1, B_MINI_ICON - 1), bsMain->ColorSpace(), true);
+       		BView *view = new BView(bbSmallIcon->Bounds(), "", B_FOLLOW_NONE, 0);
+			bbSmallIcon->AddChild(view);
+		    bbSmallIcon->Lock();
+			view->StrokeRect(bbSmallIcon->Bounds());
+			view->StrokeLine(BPoint(0.0,0.0), BPoint(B_MINI_ICON, B_MINI_ICON/2));			
+			view->StrokeLine(BPoint(B_MINI_ICON, B_MINI_ICON/2), BPoint((B_MINI_ICON *2) - 1, 0));			
+			view->Sync();
+		    bbSmallIcon->Unlock();		
+ //      		status_t test = bniFile->GetTrackerIcon(bbSmallIcon, B_MINI_ICON);
 			DragMessage(&bmMessage, bbSmallIcon, bpIconMiddle);
 		}
 	}

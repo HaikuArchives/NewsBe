@@ -5,7 +5,7 @@
 #include "NLEndpoint.h"
 #include "NLException.h"
 #include "NLAddress.h"
-#include "ServerWindow.h"
+//#include "ServerWindow/ServerWindow.h"
 #include "TransferWindow.h"
 #include "Utilities.h"
 
@@ -37,6 +37,8 @@ public:
     int GetNews();
 	bool GetList(void);
     void SendNews();
+	void MakeConnection(void);   // put this back to private
+	bool ReceiveHello(void);     // put this back to private
 
 private:
 	NLAddress objAddr; 
@@ -45,8 +47,8 @@ private:
 	unsigned short itsPortNo;
 	TransferWindow *txtLogWindow;
 
-	void MakeConnection(void);
-	bool ReceiveHello(void);
+//	void MakeConnection(void);
+//	bool ReceiveHello(void);
 	NLPacket *DoNNTPCommand(NLPacket &, NLPacket *, char *);
 	bool GetNewNews(char *, char *);
 	bool GetGroup(char *, int64, NLPacket *);

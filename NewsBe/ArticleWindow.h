@@ -6,7 +6,7 @@
 #endif
 
 #include "NewsBeTextView.h"
-#include "NewsBeMenuBar.h"
+#include "Components/NewsBeMenuBar.h"
 #include "NewsBeView.h"
 #include "constants.h"
 

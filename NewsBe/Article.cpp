@@ -2,9 +2,6 @@
 #include "Article.h"
 #endif
 
-#include <View.h>
-#include <Rect.h>
-#include <Be.h>
 
 Article::Article(const char *sPath, const char *sSubject, bool bRead, const char *sTid)
 {
