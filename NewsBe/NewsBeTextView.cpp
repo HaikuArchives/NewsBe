@@ -11,7 +11,6 @@ NewsBeTextView::NewsBeTextView(BRect frame, const char *name,
 {
 	itsLastOffset = -1;
 	DisallowChar(13);
-	SetViewColor((uchar) 200, (uchar) 111, (uchar) 1000);
 }
 
 //---------------
