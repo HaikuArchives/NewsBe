@@ -276,6 +276,13 @@ bool myConnection::GetArticle(char *pArticle, int32 iMsgIDLength, char *sNewsGro
 				// some dodgy new clients put dodgy headers out
 			   	pStartPointer = (char *)objArticle->getData();
 	  			pStartPointer = strstr(pStartPointer,"Message-Id:");				
+	  			if(pStartPointer == NULL)
+				{
+					// some dodgy new clients put dodgy headers out
+			   		pStartPointer = (char *)objArticle->getData();
+	  				pStartPointer = strstr(pStartPointer,"Message-id:");				
+				}
+
 			}
   			pStartPointer = strchr(pStartPointer, '<');
   			pEndPointer = strchr(pStartPointer, '>');
@@ -400,6 +407,12 @@ int myConnection::GetNews()
 					if ( ReceiveHello() == TRUE)
 					{
 						LogMessage(" Hello!\n",0);
+						LogMessage("Looking For Secure Log in...\n",0);
+						if(SecurePasswordLogin() == TRUE)
+						{
+							LogMessage("Login okay restarting news collection\n",0);
+				
+						}
 						while(*pStartPointer == ' ')
 						{
 							pStartPointer++;
@@ -455,6 +468,7 @@ int myConnection::GetNews()
 
 	nlpGroupListUpdate->insert(".\n",3);
 
+	bfSubs->Unset();
 	bfSubs->SetTo(itsSubsPath, B_WRITE_ONLY);
 		
 	if(bfSubs->InitCheck() == B_OK)
@@ -462,6 +476,7 @@ int myConnection::GetNews()
 		lRead = nlpGroupListUpdate->getSize();
 		bfSubs->Write(nlpGroupListUpdate->getData(), lRead);
 	}
+	bfSubs->Unset();
 	LogMessage("All news retrieved\n", 0);
 	delete bfSubs;
 	return(0);
@@ -595,6 +610,18 @@ bool myConnection::WriteFile(BFile *bfFile, NLPacket *objArticle, bool bIsArticl
 		else
 		{
 			pAttribute = strstr(pArticle,"Message-ID: ");
+			if(pAttribute == NULL)
+			{
+				// some dodgy new clients put dodgy headers out
+	  			pAttribute = strstr(pArticle,"Message-Id:");				
+				if(pAttribute == NULL)
+				{
+				// some dodgy new clients put dodgy headers out
+		  			pAttribute = strstr(pArticle,"Message-id:");				
+				}
+
+			}
+
 			pAttribute += 13; // should go one past the '<'
 			//set tid to this article....
 			pEndPointer = strchr(pAttribute, '>');
@@ -807,20 +834,6 @@ bool myConnection::GetGroup(char *sNewsGroup, int64 iLastArticle, NLPacket *nlpG
 		}
 
 	}
-	else
-	{
-		LogMessage("Could Not Get group info...\n",0);
-		if (0 == memcmp(pStartPointer, "481", 3))
-		{
-			LogMessage("Attempting Secure login...\n",0);
-			if(SecurePasswordLogin() == TRUE)
-			{
-				LogMessage("Login okay restarting news collection\n",0);
-				return(GetGroup(sNewsGroup, iLastArticle, nlpGroupListUpdate));
-			}
-				
-		}
-	}
 	delete objMessages;	
 	return((bool)TRUE);
 }
@@ -1011,29 +1024,29 @@ void myConnection::LogMessage(char *sTextToLog, int32 iLength)
 bool myConnection::SecurePasswordLogin(void)
 {
 
-	int32 lRead;
+	off_t lRead;
 	char *pPasswordPath, *pBuffer, *pStart, *pEnd;
-	FILE *fPasswords;
+	BFile bfPasswords;
+	BPath bpPasswordPath;
+
 	NLPacket nlpPasswords, nlpUserName, nlpPassword, *nlpUserReply = NULL, *nlpPassReply = NULL;
 	BAlert *baNoPrefs;
 	
 	pPasswordPath = (char *)malloc(B_PATH_NAME_LENGTH);
 	pPasswordPath = strcpy(pPasswordPath, itsAppPath);
-   	strcat(itsSubsPath,"/.passwords");
+	bpPasswordPath.SetTo(itsSubsPath);
+	bpPasswordPath.GetParent(&bpPasswordPath);
+	bpPasswordPath.Append(".passwords");
 
-	if(NULL != (fPasswords = fopen(itsSubsPath,"r")))
+	bfPasswords.SetTo(bpPasswordPath.Path(),B_READ_ONLY);
+	if(bfPasswords.InitCheck() == B_OK)
 	{
-		pBuffer = (char *)malloc(32760);
-		while(!feof(fPasswords))
-		{
-			lRead = fread(pBuffer,32759,1,fPasswords);
-			lRead = strchr(pBuffer, '\0') - pBuffer;
-			nlpPasswords.insert(pBuffer,lRead);
-		}
-		fclose(fPasswords);
+		bfPasswords.GetSize(&lRead);
+		pBuffer = (char *)malloc(lRead);
+		bfPasswords.Read(pBuffer, lRead);
+		bfPasswords.Unset();
 		
-		pStart = (char *)nlpPasswords.getData();
-		if ((pStart = strstr(pStart, itsHostAddr)) != NULL) 
+		if ((pStart = strstr(pBuffer, itsHostAddr)) != NULL) 
 		{
 			//send username....
 			
@@ -1064,7 +1077,6 @@ bool myConnection::SecurePasswordLogin(void)
 				if (memcmp(pStart, "281 ", 4) == 0)
 				{
 					LogMessage("Secure Connection Okay\n",0);
-					return (TRUE);
 				}
 				else
 				{
@@ -1073,34 +1085,28 @@ bool myConnection::SecurePasswordLogin(void)
 											"Secure Connection Failed\n check the username and password\n",
 											"Okay");
 					baNoPrefs->Go();
+					return (FALSE);		
 				}
 				
 			}
 			else
 			{
 				LogMessage("Unexpected return code during log in!!!",0);
+				return (FALSE);		
 			}
 			
 		}
 		else
 		{
-			LogMessage("Server not found in .password\n",0);
-			baNoPrefs = new BAlert("Oh Dear!!!", 
-									"A secure server is not in your .password file.",
-									"Okay");
-			baNoPrefs->Go();
+			LogMessage("Server not found in .password assuming log in not needed\n",0);
 
 		}
 	}
 	else
 	{
-		LogMessage("no .password file found... can not login into secure server\n'",0);
-		baNoPrefs = new BAlert("Oh Dear!!!", 
-										"You tried to log into a secure server\n but you don't have a .password file.",
-										"Okay");
-		baNoPrefs->Go();
+		LogMessage("no .password file found... can not login into any secure server\n'",0);
 	}
-	return (FALSE);		
+	return (TRUE);		
 }
 
 void myConnection::NormaliseID(char *pText)

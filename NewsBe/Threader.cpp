@@ -131,7 +131,11 @@ void myThreader::NewList(NewsBeOutlineListView *OutLine)
 							
 							beTidNode = new BNode(tidPath);
 							LenMsgID = beTidNode->ReadAttr("NEWS:subject",  B_STRING_TYPE, 0, (void *)buffer, 1000);
-							*(buffer+LenMsgID) = '\0';
+							if(LenMsgID < 0) {
+								memcpy(buffer, "No Subject", 11); 
+							} else {
+								*(buffer+LenMsgID) = '\0';
+							}
 							LenMsgID = beTidNode->ReadAttr("NEWS:state",  B_STRING_TYPE, 0, (void *)readBuffer, 255);
 							*(readBuffer+LenMsgID) = '\0';
 							if(memcmp(readBuffer,"read",4) == 0)
@@ -157,7 +161,11 @@ void myThreader::NewList(NewsBeOutlineListView *OutLine)
 					//Add it to the list then get the next ref
 					beTidNode = new BNode(sPath);
 					LenMsgID = beTidNode->ReadAttr("NEWS:subject",  B_STRING_TYPE, 0, (void *)buffer, 1000);
-					*(buffer+LenMsgID) = '\0';
+					if(LenMsgID < 0) {
+						memcpy(buffer, "No Subject", 11); 
+					} else {
+						*(buffer+LenMsgID) = '\0';
+					}
 					LenMsgID = beTidNode->ReadAttr("NEWS:state",  B_STRING_TYPE, 0, (void *)readBuffer, 255);
 					*(readBuffer+LenMsgID) = '\0';
 					if(memcmp(readBuffer,"read",4) == 0)
