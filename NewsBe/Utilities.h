@@ -7,12 +7,13 @@
 #include <string.h>
 #include <stdio.h>
 
+#include "Application.h"
 #include "File.h"
+#include "Roster.h"
 #include "Query.h"
 #include "Volume.h"
 #include "Node.h"
 #include "NLEndpoint.h"
-#include "Application.h"
 #include "Path.h" 
 
 class NewsBeUtilities 

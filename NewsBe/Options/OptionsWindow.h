@@ -5,6 +5,7 @@
 #include "Button.h"
 #include "Application.h"
 #include "Path.h"
+#include "Roster.h"
 
 #include "constants.h"
 #include "Options/UserOptionView.h"

@@ -79,10 +79,15 @@ void NewsBeView::AttachedToWindow()
 	}
 	else
 	{
-			textView_L1S2 = new NewsBeTextView
-						(BRect(brViewBounds.left, brViewBounds.top, brViewBounds.right-B_V_SCROLL_BAR_WIDTH , brViewBounds.bottom-(4 + BUTTON_HEIGHT + B_H_SCROLL_BAR_HEIGHT)), 
+			BRect brText = Bounds();
+			brText.right -= B_V_SCROLL_BAR_WIDTH;
+			brText.bottom -= (4 + BUTTON_HEIGHT + B_H_SCROLL_BAR_HEIGHT);
+			brText.OffsetTo(B_ORIGIN);
+			
+			textView_L1S2 = new NewsBeTextView (
+						brText, 
 						"DisplayPanel", 
-						BRect(0, 0, brViewBounds.right - B_V_SCROLL_BAR_WIDTH, brViewBounds.bottom-(BUTTON_HEIGHT + 4+  B_H_SCROLL_BAR_HEIGHT)),
+						brText,
 						B_FOLLOW_ALL, B_NAVIGABLE|B_PULSE_NEEDED|B_WILL_DRAW);
 			GetPref("ARTICLEWINFONTSIZE",sPref);
 			if (*sPref != '\0')
@@ -93,12 +98,12 @@ void NewsBeView::AttachedToWindow()
 	}
 	
 	textView_L1S2->SetAlignment(B_ALIGN_LEFT);
-	textView_L1S2->SetAutoindent(0);
-	textView_L1S2->MakeEditable(FALSE);
-	textView_L1S2->MakeResizable(TRUE);
-	textView_L1S2->MakeSelectable(TRUE);
-	textView_L1S2->SetStylable(TRUE);
-	textView_L1S2->SetWordWrap(FALSE);
+	textView_L1S2->SetAutoindent(false);
+	textView_L1S2->MakeEditable(false);
+//	textView_L1S2->MakeResizable(true);
+	textView_L1S2->MakeSelectable(true);
+	textView_L1S2->SetStylable(true);
+	textView_L1S2->SetWordWrap(true);
 	textView_L1S2->SetFontAndColor(bfArticle);
 
 	textView_L1S2->SetEncoding(ULONG_MAX);
