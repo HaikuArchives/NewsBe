@@ -34,7 +34,7 @@ void ReplyTextView::KeyDown(const char *bytes, int32 numBytes)
 		for(iOffset = iLineStart; !CanEndLine(iOffset) && iOffset < iLastOffset; iOffset++);
 		iStartOfLastLine = OffsetAt(CurrentLine()-1);
 		// if the last line is quoted or empty we don't want to join to it
-		if (iOffset + 1 == iCurrentOffset && (ByteAt(iStartOfLastLine) != '\n'&& ByteAt(iStartOfLastLine)!='>')) // we've split the line
+		if (iStartOfLastLine != iLineStart && iOffset + 1 == iCurrentOffset && (ByteAt(iStartOfLastLine) != '\n'&& ByteAt(iStartOfLastLine)!='>')) // we've split the line
 		{
 			if(iOffset - iLineStart + ((iLineStart - 1) - iStartOfLastLine) < itsMaxLineLength)				
 			{

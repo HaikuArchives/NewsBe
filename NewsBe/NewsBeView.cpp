@@ -58,22 +58,22 @@ void NewsBeView::AttachedToWindow()
 		textView_L1S2 = new NewsBeTextView
 						(BRect(302, 2, 750-(B_V_SCROLL_BAR_WIDTH * 2), brViewBounds.bottom-(4 + BUTTON_HEIGHT + B_H_SCROLL_BAR_HEIGHT)), 
 						"DisplayPanel", 
-						BRect(0, 0, 450-(B_V_SCROLL_BAR_WIDTH*3), 
+						BRect(0, 0, 650-(B_V_SCROLL_BAR_WIDTH*3), 
 						brViewBounds.bottom-(BUTTON_HEIGHT + 4+  B_H_SCROLL_BAR_HEIGHT)),
-						B_FOLLOW_LEFT|B_FOLLOW_RIGHT|B_FOLLOW_TOP|B_FOLLOW_BOTTOM, B_NAVIGABLE|B_PULSE_NEEDED|B_WILL_DRAW);
+						B_FOLLOW_ALL, B_NAVIGABLE|B_PULSE_NEEDED|B_WILL_DRAW);
 
 		// adding a OutlineListView object
-		myArticleTree = new NewsBeOutlineListView(BRect(2, 2, 296-B_V_SCROLL_BAR_WIDTH, 220), "Article List", B_SINGLE_SELECTION_LIST, B_FOLLOW_LEFT|B_FOLLOW_TOP|B_FOLLOW_BOTTOM, B_NAVIGABLE|B_WILL_DRAW);
+		myArticleTree = new NewsBeOutlineListView(BRect(2, 2, 296-B_V_SCROLL_BAR_WIDTH, 220), "Article List", B_SINGLE_SELECTION_LIST, B_FOLLOW_ALL, B_NAVIGABLE|B_WILL_DRAW);
 		myArticleTree->SetTextView(textView_L1S2);
 		
-		BScrollView *scrollView_L1S1 = new BScrollView("scrollView_L1S1", myArticleTree, B_FOLLOW_LEFT|B_FOLLOW_TOP, B_FRAME_EVENTS, true, true, B_FANCY_BORDER);
+		BScrollView *scrollView_L1S1 = new BScrollView("scrollView_L1S1", myArticleTree, B_FOLLOW_TOP_BOTTOM|B_FOLLOW_LEFT, B_FRAME_EVENTS, true, true, B_FANCY_BORDER);
 		AddChild(scrollView_L1S1);
 		
 		// adding a ListView object	
-		listView_L1S3 = new NewsBeListView(BRect(2, 240, 296-B_V_SCROLL_BAR_WIDTH, 459), "name", B_SINGLE_SELECTION_LIST, B_FOLLOW_LEFT|B_FOLLOW_TOP, B_FRAME_EVENTS|B_NAVIGABLE|B_WILL_DRAW);
+		listView_L1S3 = new NewsBeListView(BRect(2, 240, 296-B_V_SCROLL_BAR_WIDTH, 459), "name", B_SINGLE_SELECTION_LIST, B_FOLLOW_LEFT|B_FOLLOW_BOTTOM, B_FRAME_EVENTS|B_NAVIGABLE|B_WILL_DRAW);
 		listView_L1S3->SetOutLineView(myArticleTree);
 		listView_L1S3->RefreshGroups();
-		BScrollView *scrollView_L1S3 = new BScrollView("scrollView_L1S3", listView_L1S3, B_FOLLOW_LEFT|B_FOLLOW_TOP, B_FRAME_EVENTS, true, true, B_FANCY_BORDER);
+		BScrollView *scrollView_L1S3 = new BScrollView("scrollView_L1S3", listView_L1S3, B_FOLLOW_LEFT|B_FOLLOW_BOTTOM, B_FRAME_EVENTS, true, true, B_FANCY_BORDER);
 		AddChild(scrollView_L1S3);
 		
 	}
@@ -100,7 +100,6 @@ void NewsBeView::AttachedToWindow()
 	textView_L1S2->SetAlignment(B_ALIGN_LEFT);
 	textView_L1S2->SetAutoindent(false);
 	textView_L1S2->MakeEditable(false);
-//	textView_L1S2->MakeResizable(true);
 	textView_L1S2->MakeSelectable(true);
 	textView_L1S2->SetStylable(true);
 	textView_L1S2->SetWordWrap(true);

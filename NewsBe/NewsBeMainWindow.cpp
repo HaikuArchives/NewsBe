@@ -98,8 +98,16 @@ NewsBeMainWindow::NewsBeMainWindow(BRect frame, const char *title,
 	tempMenu->AddItem(tempMenuItem);
 	
 	
-	pMsg = new BMessage(OPTION_WINDOW);
-	tempMenuItem = new BMenuItem("Options",pMsg,'O'); 	
+	pMsg = new BMessage(TEXT_OPTION_WINDOW);
+	tempMenuItem = new BMenuItem("Text Options",pMsg,'O'); 	
+	tempMenu->AddItem(tempMenuItem);
+
+	pMsg = new BMessage(ARTICLE_OPTION_WINDOW);
+	tempMenuItem = new BMenuItem("Article Options",pMsg,'P'); 	
+	tempMenu->AddItem(tempMenuItem);
+
+	pMsg = new BMessage(USER_OPTION_WINDOW);
+	tempMenuItem = new BMenuItem("User Options",pMsg,'Q'); 	
 	tempMenu->AddItem(tempMenuItem);
 	
 	keyMenuBar->AddItem(tempMenu);
@@ -328,13 +336,31 @@ void NewsBeMainWindow::MessageReceived(BMessage *message)
 		case DECODE_MIME:
 			PostMessage(DECODE_MIME, nbvView);
 			break;
-		case OPTION_WINDOW:
+		case TEXT_OPTION_WINDOW:
 			myOptions = new OptionsWindow(BRect(80, 80, 580, 480), 
 										"Options",
 								  		B_DOCUMENT_WINDOW,
 								  		0,
 								  		B_CURRENT_WORKSPACE,
-								  		Looper() );
+								  		'T');
+			myOptions->Show();
+			break;
+		case USER_OPTION_WINDOW:
+			myOptions = new OptionsWindow(BRect(80, 80, 580, 480), 
+										"Options",
+								  		B_DOCUMENT_WINDOW,
+								  		0,
+								  		B_CURRENT_WORKSPACE,
+								  		'U');
+			myOptions->Show();
+			break;
+		case ARTICLE_OPTION_WINDOW:
+			myOptions = new OptionsWindow(BRect(80, 80, 580, 480), 
+										"Options",
+								  		B_DOCUMENT_WINDOW,
+								  		0,
+								  		B_CURRENT_WORKSPACE,
+								  		'A');
 			myOptions->Show();
 			break;
 		case SCRIPT_SERVER:

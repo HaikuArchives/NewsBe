@@ -63,7 +63,7 @@ YourApp::YourApp()
 
 // instantiate a new window, adjust for sceen size ???
 	win = new NewsBeMainWindow(BRect(20, 30, 760, 556), sNewsBeVersion, 
-		B_TITLED_WINDOW_LOOK, B_NORMAL_WINDOW_FEEL, B_NOT_RESIZABLE, 
+		B_TITLED_WINDOW_LOOK, B_NORMAL_WINDOW_FEEL, B_ASYNCHRONOUS_CONTROLS, 
 		B_CURRENT_WORKSPACE);
 
 // make window visible

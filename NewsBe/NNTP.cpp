@@ -932,22 +932,30 @@ void myConnection::SendThisServer(char *sServer)
 void myConnection::SendThisArticle(const char *sPath)
 {
 
-	FILE *fArticle;
+	BFile *bfArticle;
 	char *pBuffer, *pStart, *pEnd;
 	NLPacket nlpArticle, nlpCommand, nlpCommand2, *objMessages;
-	int32 lRead;
+//	int32 lRead;
+	off_t oftFileSize;
 	
-	if(NULL != (fArticle = fopen(sPath,"r")))
+	bfArticle = new BFile(sPath, B_READ_ONLY);
+	
+	if(B_OK == bfArticle->InitCheck())
 	{
-		pBuffer = (char *)malloc(32760);
-		while(!feof(fArticle))
-		{
-			lRead = fread(pBuffer,32759,1,fArticle);
-			lRead = strchr(pBuffer, '\0') - pBuffer;
-			nlpArticle.insert(pBuffer,lRead);
-			memset(pBuffer, '\0', lRead);
-		}
-		fclose(fArticle);
+		bfArticle->GetSize(&oftFileSize);
+		pBuffer = (char *)malloc(oftFileSize);
+//		while(!feof(fArticle))
+//		{
+//			lRead = fread(pBuffer,32759,1,fArticle);
+//			lRead = strchr(pBuffer, '\0') - pBuffer;
+//			nlpArticle.insert(pBuffer,lRead);
+//			memset(pBuffer, '\0', lRead);
+//		}
+		bfArticle->Read(pBuffer, oftFileSize);
+		bfArticle->Unset();
+		delete bfArticle;
+		nlpArticle.insert(pBuffer,oftFileSize);
+//		fclose(fArticle);
 		nlpCommand.insert("POST\r\n", 6);
 		objMessages = new NLPacket(10240);
 		objMessages = DoNNTPCommand(nlpCommand, objMessages, "XXX");

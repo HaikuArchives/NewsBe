@@ -30,7 +30,9 @@ const uint32 FOCUS_ON_TEXT      = 'NGsf';
 const uint32 DECODE_ARTICLE     = 'NGua';
 const uint32 DECODE_MIME	    = 'NGdm';
 const uint32 FIX_GROUPS         = 'NGfg';
-const uint32 OPTION_WINDOW		= 'NGow';
+const uint32 TEXT_OPTION_WINDOW	= 'NGto';
+const uint32 ARTICLE_OPTION_WINDOW	= 'NGao';
+const uint32 USER_OPTION_WINDOW	= 'NGuo';
 const uint32 SCRIPT_SERVER       = 'NGrs';
 
 

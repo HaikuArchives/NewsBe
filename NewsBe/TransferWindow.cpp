@@ -35,11 +35,10 @@ TransferWindow::TransferWindow(BRect frame, const char *title,
 	txtLogText->SetViewColor(color);
 	txtLogText->Insert("Logging...\n");
 	txtLogText->SetAutoindent(0);
-	txtLogText->MakeEditable(FALSE);
-	txtLogText->MakeResizable(TRUE);
+	txtLogText->MakeEditable(false);
 	txtLogText->MakeSelectable(0);
 	txtLogText->SetStylable(0);
-	txtLogText->SetWordWrap(TRUE);
+	txtLogText->SetWordWrap(true);
 
 	scrollTextView = new BScrollView("scrollTextView", txtLogText, B_FOLLOW_ALL, B_FRAME_EVENTS, true, true, B_FANCY_BORDER);
 
