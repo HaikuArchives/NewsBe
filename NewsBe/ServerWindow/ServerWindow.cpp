@@ -1,5 +1,5 @@
 //ctor
-#include "ServerWindow.h"
+#include "ServerWindow/ServerWindow.h"
 
 
 ServerWindow::ServerWindow(BRect frame, char *myAppPath) :
@@ -41,15 +41,13 @@ ServerWindow::ServerWindow(BRect frame, char *myAppPath) :
 	itsView->AddChild(bsvServers);
 	
 	//Add Group List
-	itsGroupList = new BOutlineListView(BRect(300,2, brView.right-B_V_SCROLL_BAR_WIDTH, brView.bottom - B_H_SCROLL_BAR_HEIGHT -19),
-	 							  "GroupList", B_SINGLE_SELECTION_LIST, 
-	 							  B_FOLLOW_LEFT|B_FOLLOW_TOP,
-	 							  B_FRAME_EVENTS|B_NAVIGABLE|B_WILL_DRAW);
+	itsGroupList = new ServerGroupList(BRect(300,2, brView.right-B_V_SCROLL_BAR_WIDTH, brView.bottom - B_H_SCROLL_BAR_HEIGHT -19),
+	 							  "GroupList");
 	itsServerList->SetGroupList(itsGroupList);	
 	BScrollView *bsvGroups = new BScrollView("scrollgroups", itsGroupList, B_FOLLOW_LEFT|B_FOLLOW_TOP, B_FRAME_EVENTS, true, true, B_FANCY_BORDER);	 							  
 	itsView->AddChild(bsvGroups);
 	
-	
+	itsGroupList->MakeList("newsserver");	
 			 
 }
 
@@ -107,6 +105,7 @@ void ServerWindow::AddServersToList(void)
 			itsServerList->AddItem(bsiServer);
 		}
 		pStart = pEnd + 1;
-	}	
+	}
+	
 }
 
