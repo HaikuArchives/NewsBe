@@ -1,4 +1,4 @@
-#include "View.h"
+#include "Box.h"
 #include "MenuField.h"
 #include "PopUpMenu.h"
 #include "CheckBox.h"
@@ -8,7 +8,7 @@
 #include <stdlib.h> 
 #include <string.h>
 
-class TextOptionView : public BView
+class TextOptionView : public BBox
 {
 public:
 // constructor

@@ -1,7 +1,7 @@
 #include "Options/TextOptionView.h"
 
 TextOptionView::TextOptionView(BRect frame, char *sPrefs) :
-	BView(frame, "Articles", B_FOLLOW_ALL_SIDES, B_WILL_DRAW)
+	BBox(frame, "Articles", B_FOLLOW_ALL_SIDES, B_WILL_DRAW, B_NO_BORDER)
 {
 
 	BRect brControl = frame;
@@ -24,7 +24,6 @@ TextOptionView::TextOptionView(BRect frame, char *sPrefs) :
 	bmfTranslation->SetDivider(be_plain_font->StringWidth("Translation:  "))  ;
 
 	bmDummy = new BMessage(TRANSLATION_ENUM);
-
 	bmDummy->AddInt32("CONVERSION", ULONG_MAX);
 	bpmTranslation->AddItem(new BMenuItem("<NONE>", bmDummy));
 
@@ -129,9 +128,11 @@ TextOptionView::TextOptionView(BRect frame, char *sPrefs) :
 	{
 		iCheckState = B_CONTROL_OFF;
 	}
-	bcbShort = new BCheckBox(brControl, "AOVAuto", "Short Headers ", bmDummy);
-	bcbShort->SetValue(iCheckState);
+
+	bmDummy = new BMessage(B_OK);
+	bcbShort = new BCheckBox(brControl, "TOVAuto", "Short Headers ", bmDummy, B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW | B_NAVIGABLE);
 	AddChild(bcbShort);
+	bcbShort->SetValue(iCheckState);
 
 
 }

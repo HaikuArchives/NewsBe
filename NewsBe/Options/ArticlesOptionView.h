@@ -1,10 +1,10 @@
-#include "View.h"
+#include "Box.h"
 #include "TextControl.h"
 #include "CheckBox.h"
 #include <stdlib.h> 
 #include <string.h>
 
-class ArticlesOptionView : public BView
+class ArticlesOptionView : public BBox
 {
 public:
 // constructor

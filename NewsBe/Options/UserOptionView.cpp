@@ -1,7 +1,7 @@
 #include "Options/UserOptionView.h"
 
 UserOptionView::UserOptionView(BRect frame, char *sPrefs) :
-	BView(frame, "User", B_FOLLOW_ALL_SIDES, B_WILL_DRAW)
+	BBox(frame, "User", B_FOLLOW_ALL_SIDES, B_WILL_DRAW, B_NO_BORDER)
 {
 
 	char *pPref;

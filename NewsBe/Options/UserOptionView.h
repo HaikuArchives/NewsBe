@@ -1,9 +1,9 @@
-#include "View.h"
+#include "Box.h"
 #include "TextControl.h"
 #include <stdlib.h> 
 #include <string.h>
 
-class UserOptionView : public BView
+class UserOptionView : public BBox
 {
 public:
 // constructor

@@ -1,7 +1,7 @@
 #include "Options/ArticlesOptionView.h"
 
 ArticlesOptionView::ArticlesOptionView(BRect frame, char *sPrefs) :
-	BView(frame, "NewsBe", B_FOLLOW_ALL_SIDES, B_WILL_DRAW)
+	BBox(frame, "NewsBe", B_FOLLOW_ALL_SIDES, B_WILL_DRAW, B_NO_BORDER)
 {
 
 	char *pPref;
@@ -31,8 +31,8 @@ ArticlesOptionView::ArticlesOptionView(BRect frame, char *sPrefs) :
 		iCheckState = B_CONTROL_OFF;
 	}
 	bcbAutoExpire = new BCheckBox(brControl, "AOVAuto", "Auto Expire ? ", bmDummy);
-	bcbAutoExpire->SetValue(iCheckState);
 	AddChild(bcbAutoExpire);
+	bcbAutoExpire->SetValue(iCheckState);
 	
 	
 	
@@ -56,8 +56,8 @@ ArticlesOptionView::ArticlesOptionView(BRect frame, char *sPrefs) :
 		iCheckState = B_CONTROL_OFF;
 	}
 	bcbWindow = new BCheckBox(brControl, "AOVWindow", "Article Window open at Startup ? ", bmDummy, B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW | B_NAVIGABLE);
-	bcbWindow->SetValue(iCheckState);
 	AddChild(bcbWindow);
+	bcbWindow->SetValue(iCheckState);
 
 }
 

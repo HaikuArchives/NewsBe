@@ -1,49 +1,42 @@
 #include "Options/OptionsWindow.h"
 
 
-OptionsWindow::OptionsWindow(BRect frame, const char *title, window_type type, uint32 flags, uint32 workspaces, BLooper *blMainWindow) :
+OptionsWindow::OptionsWindow(BRect frame, const char *title, window_type type, uint32 flags, uint32 workspaces, char cType) :
 	BWindow(frame, title, type, flags, workspaces)
 {
 
+//	BTab        		*myTab;
+//	BTabView		  	*myTabView;
 	char *myPrefs = NULL;
-
+	
+	myType = cType;
+	
 	const float BUTTON_HEIGHT = 30; //includes any spacing
 	const float BUTTON_WIDTH = 90; // Distance from Left of one button to left of next button
 	const float BUTTON_GAP = 2;
 	
 	BRect brView = Bounds();
-	brView.bottom -= BUTTON_HEIGHT;
 	myPrefs = ReadPrefs(myPrefs);
 
-	myMainView = new BView(brView, "myMainView", B_FOLLOW_ALL_SIDES, B_WILL_DRAW);
-
+	myMainView = new BBox(brView, "myMainView", B_FOLLOW_ALL_SIDES, B_WILL_DRAW, B_NO_BORDER);
 	AddChild(myMainView);
+	brView.bottom -= BUTTON_HEIGHT;
 	
-	myTabView = new BTabView(brView, "OptionsTabs");
-	myTabView->SetViewColor(216,216,216,0);
-	
-	brView = myTabView->Bounds();
-	brView.InsetBy(5,5);
-	
-	brView.bottom = myTabView->TabHeight();
-	
-	myTab = new BTab();
-	myTab->SetLabel("User");
-	uovUser = new UserOptionView(Bounds(), myPrefs);
-	myTabView->AddTab(uovUser, myTab);
-
-	myTab = new BTab();
-	myTab->SetLabel("Articles");
-	aovArticle = new ArticlesOptionView(Bounds(), myPrefs);
-	myTabView->AddTab(aovArticle, myTab);
-
-	myTab = new BTab();
-	myTab->SetLabel("Text");
-	tovText = new TextOptionView(Bounds(), myPrefs);
-	myTabView->AddTab(tovText, myTab);
-
-
-	myMainView->AddChild(myTabView);
+	switch(myType)
+	{
+		case 'U':
+			uovUser = new UserOptionView(brView, myPrefs);
+			myMainView->AddChild(uovUser);
+			break;
+		case 'T':
+			tovText = new TextOptionView(brView, myPrefs);
+			myMainView->AddChild(tovText);
+			break;
+		case 'A':
+			aovArticle = new ArticlesOptionView(brView, myPrefs);
+			myMainView->AddChild(aovArticle);
+			break;
+	}
 	
 	BRect brButtons = Bounds();
 	brButtons.top = brButtons.bottom - BUTTON_HEIGHT;
@@ -52,14 +45,14 @@ OptionsWindow::OptionsWindow(BRect frame, const char *title, window_type type, u
 	
 	BMessage *bmSend = new BMessage(OPTION_SAVE);
 	BButton *bbSaveButton = new BButton(brButtons, "cmdSave", "Save", bmSend, B_FOLLOW_LEFT | B_FOLLOW_BOTTOM, B_NAVIGABLE|B_WILL_DRAW);
-	AddChild(bbSaveButton);
+	myMainView->AddChild(bbSaveButton);
 
 	brButtons.left += ( BUTTON_WIDTH+BUTTON_GAP );
 	brButtons.right += ( BUTTON_WIDTH+BUTTON_GAP );
 	
 	BMessage *bmCancel = new BMessage(B_QUIT_REQUESTED);
 	BButton *bbCancelButton = new BButton(brButtons, "cmdCancel", "Cancel", bmCancel, B_FOLLOW_LEFT|B_FOLLOW_BOTTOM, B_NAVIGABLE|B_WILL_DRAW);
-	AddChild(bbCancelButton);
+	myMainView->AddChild(bbCancelButton);
 
 	
 }
@@ -72,54 +65,93 @@ void OptionsWindow::WritePrefs(void)
 {
 
 	char *pPrefBuffer = (char *)malloc(1024);
+	char *pPref, *myPrefs = NULL;
 	BFile *bfPrefs = NULL;
+
+	myPrefs = ReadPrefs(myPrefs);
+	pPref = (char *)malloc(100);
+
 	bfPrefs = GetPrefFile(bfPrefs, B_WRITE_ONLY | B_ERASE_FILE | B_CREATE_FILE);
 
 
-	sprintf(pPrefBuffer, "EMAIL=%s\n",uovUser->GetEmail());
-	bfPrefs->Write(pPrefBuffer, strlen(pPrefBuffer));
-
-	sprintf(pPrefBuffer, "REALNAME=%s\n",uovUser->GetRealName());
-	bfPrefs->Write(pPrefBuffer, strlen(pPrefBuffer));
-
-
-	sprintf(pPrefBuffer, "EXPIRESAFTER=%s\n",aovArticle->GetExpires());
-	bfPrefs->Write(pPrefBuffer, strlen(pPrefBuffer));
-	
-	if(aovArticle->GetAutoExpire() == B_CONTROL_ON)
+	if(myType == 'U')
 	{
-		bfPrefs->Write("AUTOEXPIRE=YES\n", 15);		
+	
+		sprintf(pPrefBuffer, "EMAIL=%s\n",uovUser->GetEmail());
+		bfPrefs->Write(pPrefBuffer, strlen(pPrefBuffer));
+		sprintf(pPrefBuffer, "REALNAME=%s\n",uovUser->GetRealName());
+		bfPrefs->Write(pPrefBuffer, strlen(pPrefBuffer));
 	}
 	else
 	{
-		bfPrefs->Write("AUTOEXPIRE=NO\n", 14);		
+		sprintf(pPrefBuffer, "EMAIL=%s\n",GetPref(myPrefs, "EMAIL", pPref));
+		bfPrefs->Write(pPrefBuffer, strlen(pPrefBuffer));
+		sprintf(pPrefBuffer, "REALNAME=%s\n",GetPref(myPrefs, "REALNAME", pPref));
+		bfPrefs->Write(pPrefBuffer, strlen(pPrefBuffer));
 	}
-	
-	if(aovArticle->GetWindow() == B_CONTROL_ON)
+
+	if(myType == 'A')
 	{
-		bfPrefs->Write("ARTICLEWINDOW=YES\n", 18);		
+		sprintf(pPrefBuffer, "EXPIRESAFTER=%s\n",aovArticle->GetExpires());
+		bfPrefs->Write(pPrefBuffer, strlen(pPrefBuffer));
+	
+		if(aovArticle->GetAutoExpire() == B_CONTROL_ON)
+		{
+			bfPrefs->Write("AUTOEXPIRE=YES\n", 15);		
+		}
+		else
+		{
+			bfPrefs->Write("AUTOEXPIRE=NO\n", 14);		
+		}
+		
+		if(aovArticle->GetWindow() == B_CONTROL_ON)
+		{
+			bfPrefs->Write("ARTICLEWINDOW=YES\n", 18);		
+		}
+		else
+		{
+			bfPrefs->Write("ARTICLEWINDOW=NO\n", 17);		
+		}
+	
+		sprintf(pPrefBuffer, "ARTICLEWINFONTSIZE=%s\n",aovArticle->GetWinSize());
+		bfPrefs->Write(pPrefBuffer, strlen(pPrefBuffer));
 	}
 	else
 	{
-		bfPrefs->Write("ARTICLEWINDOW=NO\n", 17);		
-	}
-
-	sprintf(pPrefBuffer, "ARTICLEWINFONTSIZE=%s\n",aovArticle->GetWinSize());
-	bfPrefs->Write(pPrefBuffer, strlen(pPrefBuffer));
-
-	if (myTranslation != ULONG_MAX)
-	{
-		sprintf(pPrefBuffer, "TRANSLATION=%ld\n", myTranslation);
+		sprintf(pPrefBuffer, "EXPIRESAFTER=%s\n",GetPref(myPrefs, "EXPIRESAFTER", pPref));
+		bfPrefs->Write(pPrefBuffer, strlen(pPrefBuffer));
+		sprintf(pPrefBuffer, "AUTOEXPIRE=%s\n",GetPref(myPrefs, "AUTOEXPIRE", pPref));
+		bfPrefs->Write(pPrefBuffer, strlen(pPrefBuffer));	
+		sprintf(pPrefBuffer, "ARTICLEWINDOW=%s\n",GetPref(myPrefs, "ARTICLEWINDOW", pPref));
+		bfPrefs->Write(pPrefBuffer, strlen(pPrefBuffer));
+		sprintf(pPrefBuffer, "ARTICLEWINFONTSIZE=%s\n",GetPref(myPrefs, "ARTICLEWINFONTSIZE", pPref));
 		bfPrefs->Write(pPrefBuffer, strlen(pPrefBuffer));
 	}
 	
-	if(tovText->GetHeader() == B_CONTROL_ON)
+
+	if(myType == 'T')
 	{
-		bfPrefs->Write("HEADERS=SHORT\n", 14);		
+		if (myTranslation != ULONG_MAX)
+		{
+			sprintf(pPrefBuffer, "TRANSLATION=%ld\n", myTranslation);
+			bfPrefs->Write(pPrefBuffer, strlen(pPrefBuffer));
+		}
+		
+		if(tovText->GetHeader() == B_CONTROL_ON)
+		{
+			bfPrefs->Write("HEADERS=SHORT\n", 14);		
+		}
+		else
+		{
+			bfPrefs->Write("HEADERS=LONG\n", 13);		
+		}
 	}
 	else
 	{
-		bfPrefs->Write("HEADERS=LONG\n", 13);		
+		sprintf(pPrefBuffer, "TRANSLATION=%s\n", GetPref(myPrefs, "TRANSLATION", pPref));
+		bfPrefs->Write(pPrefBuffer, strlen(pPrefBuffer));
+		sprintf(pPrefBuffer, "HEADERS=%s\n", GetPref(myPrefs, "HEADERS", pPref));
+		bfPrefs->Write(pPrefBuffer, strlen(pPrefBuffer));
 	}
 
 	bfPrefs->Write(".\n", 2);
@@ -186,3 +218,31 @@ BFile *OptionsWindow::GetPrefFile(BFile *bfFile, uint32 iFileMode)
    	bfFile = new BFile(itsPrefsPath, iFileMode);	
    	return (bfFile);
 }
+
+char *OptionsWindow::GetPref(char *myPrefs, char *sPref, char *sValue)
+{
+		char *pStart, *pEnd;
+		
+		//blank sValue 
+		memset(sValue,'\0', 100);
+		//find preference in buffer
+		pStart = strstr(myPrefs, sPref);
+		if (pStart != NULL)
+		{
+			pStart += (strlen(sPref) + 1);
+			pEnd =  strchr(pStart, '\n');
+			if (pEnd != NULL)	
+			{
+				// techically this means the '.' at the end of the prefs file is no longer needed
+ 				*pEnd = '\0';
+				strcpy (sValue, pStart);
+				*pEnd = '\n';
+			}
+			else
+			{
+				strcpy (sValue, pStart);
+			}
+		}
+		return(sValue);
+}
+

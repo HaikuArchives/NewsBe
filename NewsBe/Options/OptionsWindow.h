@@ -6,6 +6,7 @@
 #include "Application.h"
 #include "Path.h"
 #include "Roster.h"
+#include "Box.h"
 
 #include "constants.h"
 #include "Options/UserOptionView.h"
@@ -19,19 +20,19 @@
 class OptionsWindow : public BWindow
 {
 public:
-	OptionsWindow(BRect, const char*, window_type, uint32, uint32, BLooper *);
+	OptionsWindow(BRect, const char*, window_type, uint32, uint32, char);
 	~OptionsWindow();
 	void    MessageReceived(BMessage *);
 private:
-	void 	GetPref(char *, char *);
+	char 	*GetPref(char *, char *, char *);
 	BFile 	*GetPrefFile(BFile *, uint32);
 	void    WritePrefs(void);
 	char 	*ReadPrefs(char *);
-
+	char    myType;
 	BLooper 			*myMainWindow;	
-	BView		   		*myMainView;
-	BTabView		  	*myTabView;
-	BTab        		*myTab;
+	BBox		   		*myMainView;
+//	BTabView		  	*myTabView;
+//	BTab        		*myTab;
 	char		    	*myPrefs;
 	uint32      		myTranslation;
 
