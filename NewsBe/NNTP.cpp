@@ -488,8 +488,8 @@ NLPacket *myConnection::DoNNTPCommand(NLPacket &objCommand, NLPacket *objRespons
 	if (memcmp(pStartPointer,sGoodResponse,3) == 0)
 	{
 //rececive response....				
-		pEndPointer = pStartPointer + iDataLength - 5;
-		while ( memcmp(pEndPointer, aEndMessage, 5) != 0 )
+		pEndPointer = pStartPointer + iDataLength - 5;  
+		while ( memcmp(pEndPointer, aEndMessage, 5) != 0 ) // we're expecting a \r\n.\r\n ending
 		{
 			// grab more data, point to last few chars...
 			objConnection.recv(*objResponse,10237);
@@ -544,6 +544,8 @@ bool myConnection::WriteFile(BFile *bfFile, NLPacket *objArticle, bool bIsArticl
    			pArticle = pEndPointer + 1;
     		pEndPointer = strchr(pArticle,'\r');
    		}
+   		bfFile->Write(pArticle,pEndPointer - pArticle);
+ 		
   		bfNodeInfo = new BNodeInfo((BNode *)(bfFile));
 		bfNodeInfo->SetType("message/news");  		
 		delete bfNodeInfo;

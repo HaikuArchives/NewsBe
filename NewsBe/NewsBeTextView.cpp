@@ -38,9 +38,10 @@ void NewsBeTextView::DisplayArticle(BPath *bpArticlePath, bool bStrip)
 	status_t stTranslation;
 	off_t  oftArticleLen;
 	
+	
 	rgb_color bodyColor = {255,0,0,0};
 	
-	pBuffer = (char *)calloc(32760,1);
+//	pBuffer = (char *)calloc(32760,1);
 	
 	// find the article and and put it in a buffer, ready to display.
 	SetHighColor(bodyColor);

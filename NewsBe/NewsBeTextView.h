@@ -3,8 +3,15 @@
 
 // all includes here
 #include <stdio.h>
-#include <Be.h>
+#include <stdlib.h>
+#include <string.h>
+
+#include <File.h>
+#include <Looper.h>
+#include <Path.h>
+#include <TextView.h>
 #include <UTF8.h>
+
 #include "NLPacket.h"
 #include "constants.h"
 

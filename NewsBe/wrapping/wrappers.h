@@ -16,6 +16,7 @@
 
 extern char *NewQuotedText(char **text, long start, long end, char *quoteString);
 extern char *RewrapText(char **text, long start_index, long end_index);
+void	copy_and_wrap_with_paragraph_fill (void);
 
 #endif /* _WRAPDEFS_ */
 /*  Some macro definitions  */
