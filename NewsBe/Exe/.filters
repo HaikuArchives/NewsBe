@@ -1,0 +1,13 @@
+KPT
+(((MAIL:status=="*[nN][eE][wW]*")&&(MAIL:subject=="*[[kK][pP][tT]]*"))&&(BEOS:TYPE=="text/x-email"))
+REBOL
+(((MAIL:status=="*[nN][eE][wW]*")&&(MAIL:subject=="*[[rR][eE][bB][oO][lL]]*"))&&(BEOS:TYPE=="text/x-email"))
+AWG
+(((MAIL:status=="*[nN][eE][wW]*")&&(MAIL:subject=="*[[aA][bB]5[uU][kK]-[wW][gG]]*"))&&(BEOS:TYPE=="text/x-email"))
+Boris Mail
+(((MAIL:from=="*[mM][cC][gG][rR][aA][wW]359@[bB][iI][gG][fF][oO][oO][tT].[cC][oO][mM]*")&&(MAIL:status=="*[nN][eE][wW]*"))&&(BEOS:TYPE=="text/x-email"))
+UnRead Mail
+((MAIL:status=="*[nN][eE][wW]*")&&(BEOS:TYPE=="text/x-email"))
+Out Going News
+((NEWS:newsgroup=="*[oO][uU][tT].[gG][oO][iI][nN][gG]*")&&(BEOS:TYPE=="message/news"))
+.

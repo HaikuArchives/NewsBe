@@ -1,0 +1,26 @@
+				$Id$
+
+
+** Compiling the wrapping samples **
+
+It's strict ANSI C.  However, in `wrappers.h' conditionals are used
+to determine the local line termination (CR, LF, or CRLF) of the
+it's compiled for.  It is assumed that one of the following three
+has been #defined (either by the compiler, or manually):
+
+	* __macos__	for Mac OS systems (uses CR)
+	* __unix__	for Unix systems (uses LF)
+	* __win32__	for MS-DOS-type systems (uses CRLF)
+
+With one of these set, the sources should compile cleanly on any
+ANSI C compiler.
+
+
+** Using the wrapping samples **
+
+	* wrap-plain.c provides the NewQuotedText function
+	* wrap-quoted.c provides the RewrapText function
+
+These functions can be used from any caller.  Sample invocations
+can be found in `main.c'; detailed descriptions of the function
+APIs can be found in the sourcefiles.

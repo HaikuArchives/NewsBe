@@ -1,0 +1,25 @@
+#include "View.h"
+#include "MenuField.h"
+#include "PopUpMenu.h"
+#include "CheckBox.h"
+#include "MenuItem.h"
+#include "UTF8.h"
+#include "constants.h"
+#include <stdlib.h> 
+#include <string.h>
+
+class TextOptionView : public BView
+{
+public:
+// constructor
+	TextOptionView(BRect, char *);
+	int32 GetHeader(void);		
+
+private:
+	BMenuField	*bmfTranslation;
+	BPopUpMenu 	*bpmTranslation;
+	BCheckBox 	*bcbShort;
+	
+	char 		*GetPref(char *, char *, char *);
+	
+};
