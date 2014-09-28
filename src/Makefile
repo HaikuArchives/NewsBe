@@ -32,11 +32,11 @@ SRCS = Article.cpp ArticleWindow.cpp Components/NewsBeMenuBar.cpp NNTP.cpp NewsB
 
 #	Specify the resource definition files to use. Full or relative paths can be
 #	used.
-RDEFS = 
+RDEFS = NewsBe.rdef
 
 #	Specify the resource files to use. Full or relative paths can be used.
 #	Both RDEFS and RSRCS can be utilized in the same Makefile.
-RSRCS = NewsBe.rsrc
+RSRCS = 
 
 # End Pe/Eddie support.
 # @<-src@ 
