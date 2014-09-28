@@ -1,15 +1,8 @@
-// all includes here
-#ifndef NEWSBEOUTLINEListVIEW_HEADER
 #include "NewsBeOutlineListView.h"
-#endif
-
-
-
-#ifndef _MY_THREADER_
 #include "Threader.h"
-#endif
-
 #include "ReplyWindow.h"
+
+#include <mail_encoding.h>
 
 //---------------
 // constructor

@@ -129,7 +129,7 @@ TextOptionView::TextOptionView(BRect frame, char *sPrefs) :
 		iCheckState = B_CONTROL_OFF;
 	}
 
-	bmDummy = new BMessage(B_OK);
+	bmDummy = new BMessage((uint32)B_OK);
 	bcbShort = new BCheckBox(brControl, "TOVAuto", "Short Headers ", bmDummy, B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW | B_NAVIGABLE);
 	AddChild(bcbShort);
 	bcbShort->SetValue(iCheckState);

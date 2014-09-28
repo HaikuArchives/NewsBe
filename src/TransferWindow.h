@@ -1,13 +1,9 @@
-
 #ifndef TRANSFER_WINDOW_H
 #define TRANSFER_WINDOW_H
 
-#ifndef _WINDOW_H
 #include <Window.h>
-#endif
-
 #include <ScrollView.h>
-
+#include <TextView.h>
 
 class TransferWindow : public BWindow 
 {
