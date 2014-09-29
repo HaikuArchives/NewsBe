@@ -1,3 +1,5 @@
 objects*/
+*.so
 src/Exe/NewsBe
 src/Exe/NewsBeWinFrame
+src/nettle/
