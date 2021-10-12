@@ -1,7 +1,7 @@
-//
-// Transfer View Copyright David Burnett 1999;
-// All Rights Reserved.
-//
+/*
+ * Copyright 1999-2001, David Burnett <vargolsoft@gmail.com>. All rights reserved.
+ * Distributed under the terms of the MIT License.
+ */
 
 #ifndef TRANSFERVIEW_HEADER
 #define TRANSFERVIEW_HEADER

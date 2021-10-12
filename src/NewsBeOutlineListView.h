@@ -1,7 +1,11 @@
+/*
+ * Copyright 1999-2001, David Burnett <vargolsoft@gmail.com>. All rights reserved.
+ * Distributed under the terms of the MIT License.
+ */
+
 #ifndef NEWSBEOUTLINELISTVIEW_HEADER
 #define NEWSBEOUTLINELISTVIEW_HEADER
 
-// all includes here
 #include <stdio.h>
 #include <Be.h>
 #include "constants.h"

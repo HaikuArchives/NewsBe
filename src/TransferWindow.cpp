@@ -1,3 +1,7 @@
+/*
+ * Copyright 1999-2001, David Burnett <vargolsoft@gmail.com>. All rights reserved.
+ * Distributed under the terms of the MIT License.
+ */
 
 #ifndef TRANSFER_WINDOW_H
 #include "TransferWindow.h"
@@ -74,7 +78,5 @@ void	TransferWindow::MessageReceived(BMessage *beMessage)
 			break;			
 	}
 }
-	
+
 //bool	TransferWindow::QuitRequested();
-
-

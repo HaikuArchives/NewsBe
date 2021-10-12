@@ -1,3 +1,8 @@
+/*
+ * Copyright 1999-2001, David Burnett <vargolsoft@gmail.com>. All rights reserved.
+ * Distributed under the terms of the MIT License.
+ */
+
 #ifndef _GROUP_TREE_ITEM_H_
 #define _GROUP_TREE_ITEM_H_
 
