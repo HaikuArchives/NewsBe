@@ -1,3 +1,7 @@
+/*
+ * Copyright 1999-2001, David Burnett <vargolsoft@gmail.com>. All rights reserved.
+ * Distributed under the terms of the MIT License.
+ */
 
 #ifndef REPLY_WINDOW_H
 #include "ReplyWindow.h"
