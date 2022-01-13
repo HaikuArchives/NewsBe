@@ -12,8 +12,6 @@
 #include "TransferWindow.h"
 #include <Looper.h>
 #include <TextView.h>
-#include <iostream.h>
-
 
 
 class ScriptServer : public BLooper
@@ -32,13 +30,13 @@ private:
 	void NormaliseID(char *);
 
 	TransferWindow *txtLogWindow;
-	
+
 	thread_id tidServer;
 	uint32 itsTranslation;
 
-	
+
 	char *itsAppPath;
-	char *itsSubsPath;	
+	char *itsSubsPath;
 
 };
 	int32   RunServer(void *);
