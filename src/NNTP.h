@@ -20,14 +20,12 @@
 
 #include <Looper.h>
 #include <TextView.h>
-#include <iostream.h>
 #include <File.h>
 #include <NodeInfo.h>
-#include <iostream.h>
-#include <stdlib.h>
+#include <cstdlib>
 #include <Path.h>
 #include <Be.h>
-#include <time.h>
+#include <ctime>
 
 
 
@@ -46,7 +44,7 @@ public:
 	bool ReceiveHello(void);     // put this back to private
 
 private:
-	NLAddress objAddr; 
+	NLAddress objAddr;
 	NLEndpoint objConnection;
 	char *itsHostAddr;
 	unsigned short itsPortNo;
@@ -59,18 +57,18 @@ private:
 	bool GetGroup(char *, int64, NLPacket *);
 	bool GetArticle(char *, int32, char *, bool);
 	bool GetNewGroups(char *);
-	bool WriteFile(BFile *, NLPacket *, bool, char *, int32); 
+	bool WriteFile(BFile *, NLPacket *, bool, char *, int32);
 	void SendThisArticle(const char *);
 	void SendThisServer(char *);
 	void LogMessage(char *, int32);
 	bool SecurePasswordLogin(void);
 	void NormaliseID(char*);
-	
+
 	int32 *itsPollNumber;
 	uint32 itsTranslation;
 	char *itsAppPath;
 	char *itsSubsPath;
-	
+
 
 };
 
